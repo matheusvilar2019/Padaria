@@ -1,14 +1,14 @@
 public class Produto {
     String nome;
     Double precoUnitario;
-    Double peso;
+    Double quantidade;
     Double valorTotal;
 
-    public Produto(String nome, Double precoUnitario, Double peso) {
+    public Produto(String nome, Double precoUnitario, Double quantidade) {
         this.nome = nome;
         this.precoUnitario = precoUnitario;
-        this.peso = peso;
-        this.valorTotal = calculaValorTotal();
+        this.quantidade = quantidade;
+        this.valorTotal = calcularSubTotal();
     }
 
     public String getNome() {
@@ -20,18 +20,18 @@ public class Produto {
     }
 
     public Double getPeso() {
-        return peso;
+        return quantidade;
     }
 
     public Double getValorTotal() {
         return valorTotal;
     }
 
-    private Double calculaValorTotal() {
-        if (peso == 0.00) {
+    private Double calcularSubTotal() {
+        if (quantidade == 0.00) {
             return precoUnitario;
         } else {
-            return precoUnitario * peso;
+            return precoUnitario * quantidade;
         }
     }
 }
