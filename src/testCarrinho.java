@@ -18,8 +18,8 @@ public class testCarrinho {
         Carrinho carrinho2 = new Carrinho(produtos, true);
 
         assertEquals(produtos, carrinho.getProdutos());
-        assertEquals(false, carrinho.getNotaFiscal());
-        assertEquals(true, carrinho2.getNotaFiscal());
+        assertEquals(false, carrinho.getCPFNota());
+        assertEquals(true, carrinho2.getCPFNota());
     }
 
     @Test

@@ -4,11 +4,11 @@ import java.util.stream.Collectors;
 public class Carrinho {
     private List<Produto> produtos;
     private Double valorTotal;
-    private Boolean notaFiscal;
+    private Boolean CPFNota;
 
-    public Carrinho(List<Produto> produtos, Boolean notaFiscal) {
+    public Carrinho(List<Produto> produtos, Boolean CPFNota) {
         this.produtos = produtos;
-        this.notaFiscal = notaFiscal;
+        this.CPFNota = CPFNota;
         this.valorTotal = calculaValorTotal();
     }
 
@@ -20,8 +20,8 @@ public class Carrinho {
         return valorTotal;
     }
 
-    public boolean getNotaFiscal() {
-        return notaFiscal;
+    public boolean getCPFNota() {
+        return CPFNota;
     }
 
     public Double calculaValorTotal() {
