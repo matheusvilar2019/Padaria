@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class NotaFiscal {
+public class Nota {
     private String nomeCliente;
     private String CPFCliente;
     private boolean CPFNota;
@@ -17,7 +17,7 @@ public class NotaFiscal {
     private String cnpj = "12.345.678/0001-99";
     private String operador = "João Silva";
 
-    public NotaFiscal(String nomeCliente, String CPFCliente, boolean CPFNota, List<Produto> produtos, Double total, Double pago, Double troco) {
+    public Nota(String nomeCliente, String CPFCliente, boolean CPFNota, List<Produto> produtos, Double total, Double pago, Double troco) {
         this.nomeCliente = nomeCliente;
         this.CPFCliente = CPFCliente;
         this.CPFNota = CPFNota;
@@ -43,7 +43,7 @@ public class NotaFiscal {
         return produtos;
     }
 
-    public String geraNotaFiscal() {
+    public String geraNota() {
         StringBuilder nota = new StringBuilder();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String dataHora = LocalDateTime.now().format(formatter);

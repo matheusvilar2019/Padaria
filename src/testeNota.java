@@ -1,13 +1,11 @@
 import org.junit.Test;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class testeNotaFiscal {
+public class testeNota {
     @Test
     public void preencheValores() {
         String nomeCliente = "Matheus";
@@ -24,12 +22,12 @@ public class testeNotaFiscal {
         Double pago = 100.00;
         Double troco = pago - total;
 
-        NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
 
-        assertEquals(nomeCliente, notaFiscal.getNomeCliente());
-        assertEquals(CPFCliente, notaFiscal.getCPFCliente());
-        assertEquals(CPFNota, notaFiscal.getCPFNota());
-        assertEquals(produtos, notaFiscal.getProdutos());
+        assertEquals(nomeCliente, nota.getNomeCliente());
+        assertEquals(CPFCliente, nota.getCPFCliente());
+        assertEquals(CPFNota, nota.getCPFNota());
+        assertEquals(produtos, nota.getProdutos());
     }
 
     @Test
@@ -49,10 +47,10 @@ public class testeNotaFiscal {
         Double pago = 300.00;
         Double troco = pago - total;
 
-        NotaFiscal notaFiscal = new NotaFiscal(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
 
-        String nota = notaFiscal.geraNotaFiscal();
+        String notaImpressa = nota.geraNota();
 
-        System.out.println(nota);
+        System.out.println(notaImpressa);
     }
 }
