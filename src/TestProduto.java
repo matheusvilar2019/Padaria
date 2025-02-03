@@ -10,15 +10,24 @@ public class TestProduto {
 
         assertEquals("Pão", produto.getNome());
         assertEquals((Double) 10.00, produto.getPrecoUnitario());
-        assertEquals((Double) 1.00, produto.getPeso());
+        assertEquals((Double) 1.00, produto.getQuantidade());
         assertEquals((Double) 10.00, produto.getValorTotal());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void nomeNulo() {
+        Produto produto = new Produto(null, 4.00, 0.00);
+    }
 
-    @Test
-    public void valorTotalComPesoZero() {
+    @Test(expected = IllegalArgumentException.class)
+    public void precoUnitarioZero() {
+        Produto produto = new Produto("Biscoito", 0.00, 1.00);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void quantidadeZero() {
         Produto produto = new Produto("Biscoito", 4.00, 0.00);
-        assertEquals((Double) 4.00, produto.getValorTotal());
     }
 
     @Test

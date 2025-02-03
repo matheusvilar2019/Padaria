@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Carrinho {
@@ -7,7 +8,7 @@ public class Carrinho {
     private Boolean CPFNota;
 
     public Carrinho(List<Produto> produtos, Boolean CPFNota) {
-        this.produtos = produtos;
+        this.produtos = Objects.requireNonNull(produtos, "A lista de produtos não pode ser nula");
         this.CPFNota = CPFNota;
         this.valorTotal = calculaValorTotal();
     }
@@ -25,10 +26,13 @@ public class Carrinho {
     }
 
     public Double calculaValorTotal() {
-        Double valor = produtos.stream()
-                .map(x -> x.valorTotal)
-                .reduce(0.00, Double::sum);
+        try {
+            return produtos.stream()
+                    .map(p -> p.getValorTotal() != null ? p.getValorTotal() : 0.00)
+                    .reduce(0.00, Double::sum);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
-        return valor;
     }
 }
