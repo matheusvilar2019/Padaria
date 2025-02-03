@@ -1,14 +1,23 @@
+import java.util.Objects;
+
 public class Produto {
-    String nome;
-    Double precoUnitario;
-    Double quantidade;
-    Double valorTotal;
+    private String nome;
+    private Double precoUnitario;
+    private Double quantidade;
+    private Double valorTotal;
 
     public Produto(String nome, Double precoUnitario, Double quantidade) {
-        this.nome = nome;
-        this.precoUnitario = precoUnitario;
-        this.quantidade = quantidade;
+        this.nome = Objects.requireNonNull(nome, "O nome não pode ser nulo");
+        this.precoUnitario = validarValor(precoUnitario, "O preço unitário não pode ser nulo ou zero");
+        this.quantidade = validarValor(quantidade, "A quantidade não pode ser nula ou zero");
         this.valorTotal = calcularSubTotal();
+    }
+
+    public Double validarValor(Double valor, String mensagemErro) {
+        if (valor == null || valor == 0.00) {
+            throw new IllegalArgumentException(mensagemErro);
+        }
+        return valor;
     }
 
     public String getNome() {
@@ -19,7 +28,7 @@ public class Produto {
         return precoUnitario;
     }
 
-    public Double getPeso() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
@@ -28,10 +37,6 @@ public class Produto {
     }
 
     private Double calcularSubTotal() {
-        if (quantidade == 0.00) {
-            return precoUnitario;
-        } else {
-            return precoUnitario * quantidade;
-        }
+        return precoUnitario * quantidade;
     }
 }

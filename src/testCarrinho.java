@@ -10,7 +10,7 @@ public class testCarrinho {
     public void preencheCarrinho() {
         List<Produto> produtos = Arrays.asList(
                 new Produto("Pão", 10.00, 1.00),
-                new Produto("Biscoito", 4.00, 0.00),
+                new Produto("Biscoito", 4.00, 1.00),
                 new Produto("Queijo", 50.00, 5.00)
         );
 
@@ -26,7 +26,7 @@ public class testCarrinho {
     public void valorTotal() {
         List<Produto> produtos = Arrays.asList(
                 new Produto("Pão", 10.00, 1.00),
-                new Produto("Biscoito", 4.00, 0.00),
+                new Produto("Biscoito", 4.00, 1.00),
                 new Produto("Queijo", 50.00, 5.00)
         );
 
@@ -39,7 +39,7 @@ public class testCarrinho {
     public void valorTotal2() {
         List<Produto> produtos = Arrays.asList(
                 new Produto("Pão", -10.00, 1.00),
-                new Produto("Biscoito", 4.00, 0.00),
+                new Produto("Biscoito", 4.00, 1.00),
                 new Produto("Queijo", 50.00, 5.00)
         );
 
@@ -52,12 +52,17 @@ public class testCarrinho {
     public void valorTotal3() {
         List<Produto> produtos = Arrays.asList(
                 new Produto("Pão", 10.00, 1.00),
-                new Produto("Biscoito", 4.00, 0.00),
+                new Produto("Biscoito", 4.00, 1.00),
                 new Produto("Queijo", -50.00, 5.00)
         );
 
         Carrinho carrinho = new Carrinho(produtos, false);
 
         assertEquals((Double) (-236.00), carrinho.getValorTotal());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void produtoNulo() {
+        Carrinho carrinho = new Carrinho(null, false);
     }
 }
