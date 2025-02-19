@@ -9,7 +9,8 @@ public class Produto {
     public Produto(String nome, Double precoUnitario, Double quantidade) {
         this.nome = Objects.requireNonNull(nome, "O nome não pode ser nulo");
         this.precoUnitario = validarValor(precoUnitario, "O preço unitário não pode ser nulo ou zero");
-        this.quantidade = validarValor(quantidade, "A quantidade não pode ser nula ou zero");
+        this.quantidade = quantidade;
+        //this.quantidade = validarValor(quantidade, "A quantidade não pode ser nula ou zero");
         this.valorTotal = calcularSubTotal();
     }
 
@@ -30,6 +31,10 @@ public class Produto {
 
     public Double getQuantidade() {
         return quantidade;
+    }
+
+    public void setQuantidade(Double quantidade) {
+        this.quantidade = quantidade;
     }
 
     public Double getValorTotal() {
