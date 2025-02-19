@@ -1,15 +1,61 @@
+import java.util.*;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        System.out.println("Bem vindo à padaría");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Map<Integer, Produto> produtosCadastro = new HashMap();
+
+        produtosCadastro.put(1, new Produto("Pão Francês", 0.50, 0.00));
+        produtosCadastro.put(2, new Produto("Leite", 5.00, 0.00));
+        produtosCadastro.put(3, new Produto("Manteiga", 7.00, 0.00));
+        produtosCadastro.put(4, new Produto("Sonho", 7.00, 0.00));
+
+        
+        List<Produto> produtosCarrinho = menu(produtosCadastro);
+
+        for (Produto produto : produtosCarrinho) {
+            System.out.println(produto.getNome() + " - Qtd: " + produto.getQuantidade());
         }
+    }
+
+    public static List<Produto> menu(Map<Integer, Produto> produtosCadastro) {
+        Scanner scanner = new Scanner(System.in);
+        String resposta;
+        Double qtd;
+
+        List<Produto> produtosCarrinho = new ArrayList<>();
+
+        do {
+            System.out.println("Digite o código do produto: ");
+            for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
+                Integer chave = entry.getKey();
+                Produto produto = entry.getValue();
+                System.out.println(chave + " - " + produto.getNome());
+            }
+            System.out.println("\nS = Sair");
+
+            resposta = scanner.next();
+
+            if (resposta.equalsIgnoreCase("S")) break;
+
+            System.out.println("Digite a quantidade:");
+            qtd = scanner.nextDouble();
+
+            produtosCadastro.get(Integer.parseInt(resposta)).setQuantidade(qtd);
+            resposta = "";
+
+
+        } while (!resposta.equalsIgnoreCase("S"));
+
+        for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
+            Produto produto = entry.getValue();
+            if (produto.getQuantidade() > 0.00)
+                produtosCarrinho.add(produto);
+        }
+
+        return produtosCarrinho;
     }
 }
