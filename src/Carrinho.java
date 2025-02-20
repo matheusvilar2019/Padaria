@@ -33,6 +33,11 @@ public class Carrinho {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
 
+    public String pagar(Double valorPago) {
+        Double troco = valorPago - valorTotal;
+        Nota nota = new Nota(null, null, false, produtos, valorTotal, valorPago, troco);
+        return nota.gerarNota();
     }
 }

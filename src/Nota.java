@@ -51,7 +51,7 @@ public class Nota {
             String dataHora = LocalDateTime.now().format(formatter);
 
             nota.append("=======================================\n");
-            nota.append(String.format("       %s\n", nomeLoja.toUpperCase()));
+            nota.append(String.format("          %s\n", nomeLoja.toUpperCase()));
             nota.append(String.format(" %s\n", endereco));
             nota.append(String.format(" Tel: %s\n", telefone));
             nota.append(String.format(" CNPJ: %s\n", cnpj));

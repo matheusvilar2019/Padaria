@@ -35,6 +35,7 @@ public class Produto {
 
     public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
+        this.valorTotal = calcularSubTotal();
     }
 
     public Double getValorTotal() {
