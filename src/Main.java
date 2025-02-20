@@ -19,6 +19,21 @@ public class Main {
         for (Produto produto : produtosCarrinho) {
             System.out.println(produto.getNome() + " - Qtd: " + produto.getQuantidade());
         }
+
+        Carrinho carrinho = new Carrinho(produtosCarrinho, false);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Valor total: " + carrinho.calculaValorTotal());
+
+        System.out.println("\nDigite o valor do dinheiro dado pelo cliente: ");
+        Double valorPago = scanner.nextDouble();
+
+        String nota = carrinho.pagar(valorPago);
+
+        System.out.println("\n");
+        System.out.println(nota);
+
+
     }
 
     public static List<Produto> menu(Map<Integer, Produto> produtosCadastro) {
