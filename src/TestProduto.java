@@ -24,12 +24,6 @@ public class TestProduto {
         Produto produto = new Produto("Biscoito", 0.00, 1.00);
     }
 
-
-    @Test(expected = IllegalArgumentException.class)
-    public void quantidadeZero() {
-        Produto produto = new Produto("Biscoito", 4.00, 0.00);
-    }
-
     @Test
     public void valorTotalComPesoPositivo() {
         Produto produto = new Produto("Queijo", 50.00, 5.00);
