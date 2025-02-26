@@ -33,58 +33,13 @@ public class Main {
         try {
             do {
 
-                // Produto
-                do {
-                    try {
-                        System.out.println("Digite o código do produto: ");
-                        for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
-                            Integer chave = entry.getKey();
-                            Produto produto = entry.getValue();
-                            System.out.println(chave + " - " + produto.getNome());
-                        }
-                        System.out.println("\nF = Fechar carrinho");
+                // Escolhe produto
+                resposta = escolherProduto(produtosCadastro);
+                if (resposta.equalsIgnoreCase("F")) break;
 
-                        resposta = scanner.next();
-
-                        if (resposta.equalsIgnoreCase("F")) {
-                            // Verifica se existe produto adicionado
-                            if (produtosCadastro.values().stream().anyMatch(produto ->  produto.getQuantidade() > 0.00)) break;
-
-                            System.out.println("Escolha ao menos um produto: \n");
-                            colocarProdutosCarrinho(produtosCadastro);
-                        }
-                        else if ((!resposta.equalsIgnoreCase("F")
-                                && !isInteger(resposta))
-                                || !produtosCadastro.containsKey(Integer.parseInt(resposta))) throw new IllegalArgumentException();
-
-                        entradaValida = true;
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Digite um valor válido\n");
-                        scanner.next();
-                        entradaValida = false;
-                    }
-
-                } while (!entradaValida);
-
-                // Quantidade
-                do {
-                    if (resposta.equalsIgnoreCase("F")) break;
-
-                    try {
-                        System.out.println("Digite a quantidade:");
-                        quantidade = scanner.nextDouble();
-                        produtosCadastro.get(Integer.parseInt(resposta)).setQuantidade(quantidade);
-                        resposta = "";
-
-                        entradaValida = true;
-                    } catch (InputMismatchException e) {
-                        System.out.println("Digite um valor válido\n");
-                        scanner.next();
-                        entradaValida = false;
-                    }
-                } while (!entradaValida);
-
-
+                // Escolhe quantidade
+                quantidade = escolherQuantidade();
+                produtosCadastro.get(Integer.parseInt(resposta)).setQuantidade(quantidade);
 
             } while (!resposta.equalsIgnoreCase("F"));
 
@@ -97,12 +52,74 @@ public class Main {
             for (Produto produto : produtosCarrinho) {
                 System.out.println(produto.getNome() + " - quantidade: " + produto.getQuantidade());
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
 
         return produtosCarrinho;
+    }
+
+    private static String escolherProduto(Map<Integer, Produto> produtosCadastro) {
+        Scanner scanner = new Scanner(System.in);
+        boolean entradaValida;
+        String resposta = "";
+        List<Produto> produtosCarrinho;
+
+        do {
+            try {
+
+                // Exibe os produtos cadastrados
+                System.out.println("Digite o código do produto: ");
+                for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
+                    Integer chave = entry.getKey();
+                    Produto produto = entry.getValue();
+                    System.out.println(chave + " - " + produto.getNome());
+                }
+                System.out.println("\nF = Fechar carrinho");
+
+                resposta = scanner.next();
+
+                // Valida respostas
+                if (resposta.equalsIgnoreCase("F")) {
+                    // Verifica se existe produto adicionado
+                    if (produtosCadastro.values().stream().anyMatch(produto ->  produto.getQuantidade() > 0.00)) break;
+
+                    System.out.println("Escolha ao menos um produto: \n");
+                    entradaValida = false;
+                }
+                else if ((!resposta.equalsIgnoreCase("F")
+                        && !isInteger(resposta))
+                        || !produtosCadastro.containsKey(Integer.parseInt(resposta))) throw new IllegalArgumentException();
+
+                entradaValida = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Digite um valor válido\n");
+                scanner.next();
+                entradaValida = false;
+            }
+        } while (!entradaValida);
+
+        return resposta;
+    }
+
+    private static Double escolherQuantidade() {
+        Double quantidade = 0.00;
+        boolean entradaValida;
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            try {
+                System.out.println("Digite a quantidade:");
+                quantidade = scanner.nextDouble();
+                entradaValida = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um valor válido\n");
+                scanner.next();
+                entradaValida = false;
+            }
+        } while (!entradaValida);
+
+        return quantidade;
     }
 
     private static boolean isInteger(String str) {
