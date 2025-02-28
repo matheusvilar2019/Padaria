@@ -3,12 +3,52 @@ import java.util.*;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Bem vindo à padaría");
+    static String operador = "";
 
-        Map<Integer, Produto> produtosCadastrados = carregarProdutosCadastrados();
-        List<Produto> produtosCarrinho = colocarProdutosCarrinho(produtosCadastrados);
-        fecharCarrinho(produtosCarrinho);
+    public static void main(String[] args) {
+        menu();
+    }
+
+    public static void menu() {
+        Scanner scanner = new Scanner(System.in);
+        int respostaMenu = 0;
+
+
+        if (operador.equals("")) escolherOperador();
+
+        System.out.println("Bem vindo, " + operador);
+
+        System.out.println("1 - Carrinho");
+        System.out.println("2 - Operador");
+        System.out.println("3 - Adicionar produtos");
+
+        respostaMenu = scanner.nextInt();
+
+        switch (respostaMenu) {
+            case 1:
+                Map<Integer, Produto> produtosCadastrados = carregarProdutosCadastrados();
+                List<Produto> produtosCarrinho = colocarProdutosCarrinho(produtosCadastrados);
+                fecharCarrinho(produtosCarrinho);
+                menu();
+                break;
+            case 2:
+                escolherOperador();
+                menu();
+                break;
+            case 3:
+                adicionarProdutos();
+                menu();
+        }
+    }
+
+    private static void escolherOperador() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Digite o nome do operador: ");
+        operador = scanner.next();
+    }
+
+    private static void adicionarProdutos() {
     }
 
     public static Map<Integer, Produto> carregarProdutosCadastrados() {
@@ -134,7 +174,7 @@ public class Main {
     }
 
     public static void fecharCarrinho(List<Produto> produtosCarrinho) {
-        Carrinho carrinho = new Carrinho(produtosCarrinho, false);
+        Carrinho carrinho = new Carrinho(produtosCarrinho, false, operador);
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Valor total: " + carrinho.calculaValorTotal());

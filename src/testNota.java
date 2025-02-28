@@ -5,7 +5,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class testeNota {
+public class testNota {
     @Test
     public void preencheValores() {
         String nomeCliente = "Matheus";
@@ -21,8 +21,9 @@ public class testeNota {
                 .reduce(0.00, Double::sum);
         Double pago = 100.00;
         Double troco = pago - total;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
 
         assertEquals(nomeCliente, nota.getNomeCliente());
         assertEquals(CPFCliente, nota.getCPFCliente());
@@ -46,8 +47,9 @@ public class testeNota {
                 .reduce(0.00, Double::sum);
         Double pago = 300.00;
         Double troco = pago - total;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
 
         String notaImpressa = nota.gerarNota();
 
@@ -63,8 +65,9 @@ public class testeNota {
         Double total = 1.00;
         Double pago = 1.00;
         Double troco = 1.00;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, null, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, null, total, pago, troco, operador);
     }
 
     @Test(expected = NullPointerException.class)
@@ -81,8 +84,9 @@ public class testeNota {
         Double total = null;
         Double pago = 1.00;
         Double troco = 1.00;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
     }
 
     @Test(expected = NullPointerException.class)
@@ -99,8 +103,9 @@ public class testeNota {
         Double total = 1.00;
         Double pago = null;
         Double troco = 1.00;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
     }
 
     @Test(expected = NullPointerException.class)
@@ -117,7 +122,8 @@ public class testeNota {
         Double total = 1.00;
         Double pago = 1.00;
         Double troco = null;
+        String operador = "Matheus";
 
-        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco);
+        Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
     }
 }
