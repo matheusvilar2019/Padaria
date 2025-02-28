@@ -16,9 +16,9 @@ public class Nota {
     private static final String endereco = "Rua das Rosquinhas, 123 - Centro";
     private static final String telefone = "(11) 98765-4321";
     private static final String cnpj = "12.345.678/0001-99";
-    private static final String operador = "João Silva";
+    private String operador;
 
-    public Nota(String nomeCliente, String CPFCliente, boolean CPFNota, List<Produto> produtos, Double total, Double pago, Double troco) {
+    public Nota(String nomeCliente, String CPFCliente, boolean CPFNota, List<Produto> produtos, Double total, Double pago, Double troco, String operador) {
         this.nomeCliente = nomeCliente;
         this.CPFCliente = CPFCliente;
         this.CPFNota = CPFNota;
@@ -26,6 +26,7 @@ public class Nota {
         this.total = Objects.requireNonNull(total, "O valor total não pode ser nulo");
         this.pago = Objects.requireNonNull(pago, "O valor pago não pode ser nulo");
         this.troco = Objects.requireNonNull(troco, "O valor do troco não pode ser nulo");
+        this.operador = operador;
     }
 
     public String getNomeCliente() {
