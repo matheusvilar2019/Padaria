@@ -4,6 +4,7 @@ import java.util.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static String operador = "";
+    static Map<Integer, Produto> produtosCadastrados = carregarProdutosCadastrados();
 
     public static void main(String[] args) {
         menu();
@@ -26,7 +27,6 @@ public class Main {
 
         switch (respostaMenu) {
             case 1:
-                Map<Integer, Produto> produtosCadastrados = carregarProdutosCadastrados();
                 List<Produto> produtosCarrinho = colocarProdutosCarrinho(produtosCadastrados);
                 fecharCarrinho(produtosCarrinho);
                 menu();
@@ -49,6 +49,41 @@ public class Main {
     }
 
     private static void adicionarProdutos() {
+        String nome;
+        Double precoUnitario;
+        Integer maiorChave = 0;
+        boolean entradaValida;
+
+        do {
+            try {
+                Scanner scanner = new Scanner(System.in);
+
+                System.out.println("========================");
+                System.out.println("===== NOVO PRODUTO =====");
+                System.out.println("========================");
+
+                System.out.println("Digite o nome: ");
+                nome = scanner.next();
+
+                System.out.println("Digite o valor: ");
+                precoUnitario = scanner.nextDouble();
+
+                for (Map.Entry<Integer, Produto> entry : produtosCadastrados.entrySet()) {
+                    if (entry.getKey() > maiorChave) {
+                        maiorChave = entry.getKey();
+                    }
+                }
+
+                produtosCadastrados.put(maiorChave + 1, new Produto(nome, precoUnitario, 0.00));
+
+                entradaValida = true;
+            } catch (InputMismatchException e) {
+                entradaValida = false;
+                System.out.println("Digite um valor válido:\n");
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        } while (!entradaValida);
     }
 
     public static Map<Integer, Produto> carregarProdutosCadastrados() {
