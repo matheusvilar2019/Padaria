@@ -1,0 +1,3 @@
+Pao de batata	5.00
+Panetone	30.00
+Cafe	120.00
