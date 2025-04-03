@@ -45,4 +45,9 @@ public class Produto {
     private Double calcularSubTotal() {
         return precoUnitario * quantidade;
     }
+
+    @Override
+    public String toString(){
+        return "[Nome: " + this.nome + ", Preço Unitário: " + this.precoUnitario + ", Quantidade: " + this.quantidade + ", Valor Total:" + this.valorTotal + "]";
+    }
 }
