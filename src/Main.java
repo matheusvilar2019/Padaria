@@ -4,7 +4,7 @@ import java.util.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static String operador = "";
-    static Map<Integer, Produto> produtosCadastrados = carregarProdutosCadastrados();
+    static Map<Integer, Produto> produtosCadastrados = carregarProdutos();
 
     public static void main(String[] args) {
         menu();
@@ -86,15 +86,21 @@ public class Main {
         } while (!entradaValida);
     }
 
-    public static Map<Integer, Produto> carregarProdutosCadastrados() {
-        Map<Integer, Produto> produtosCadastro = new HashMap();
+    public static Map<Integer, Produto> carregarProdutos() {
+        Map<Integer, Produto> produtos = new HashMap();
 
-        produtosCadastro.put(1, new Produto("Pão Francês", 0.50, 0.00));
-        produtosCadastro.put(2, new Produto("Leite", 5.00, 0.00));
-        produtosCadastro.put(3, new Produto("Manteiga", 7.00, 0.00));
-        produtosCadastro.put(4, new Produto("Sonho", 7.00, 0.00));
+        //Importa produtos via arquivo de texto
+        ImportaArquivo importaArquivo = new ImportaArquivo();
+        List<Produto> listaEntrada = importaArquivo.importar();
 
-        return produtosCadastro;
+        //adicionar listaEntrada ao mapTeste
+        int maxKey = produtos.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
+
+        for (Produto produto : listaEntrada) {
+            produtos.put(maxKey++, produto);
+        }
+
+        return produtos;
     }
 
     public static List<Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
