@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -20,15 +21,15 @@ public class Main {
         System.out.println("Bem vindo, " + operador);
 
         System.out.println("1 - Carrinho");
-        System.out.println("2 - Operador");
-        System.out.println("3 - Adicionar produtos");
+        System.out.println("2 - Operador: Escolher");
+        System.out.println("3 - Produtos: Incluir novos");
 
         respostaMenu = scanner.nextInt();
 
         switch (respostaMenu) {
             case 1:
                 List<Produto> produtosCarrinho = colocarProdutosCarrinho(produtosCadastrados);
-                fecharCarrinho(produtosCarrinho);
+                if (!produtosCarrinho.isEmpty()) fecharCarrinho(produtosCarrinho);
                 menu();
                 break;
             case 2:
@@ -116,6 +117,10 @@ public class Main {
 
                 // Escolhe produto
                 resposta = escolherProduto(produtosCadastro);
+                if (resposta.equalsIgnoreCase("C")) {
+                    produtosCadastrados = carregarProdutos(); // Limpa Lista
+                    return produtosCarrinho = new ArrayList<>();
+                }
                 if (resposta.equalsIgnoreCase("F")) break;
 
                 // Escolhe quantidade
@@ -130,8 +135,12 @@ public class Main {
                     produtosCarrinho.add(produto);
             }
 
+            System.out.println("=======================================");
+            System.out.println("               PAGAMENTO               ");
+            System.out.println("=======================================");
+
             for (Produto produto : produtosCarrinho) {
-                System.out.println(produto.getNome() + " - quantidade: " + produto.getQuantidade());
+                System.out.println(String.format("%s - Qtd: %.2f - R$%.2f", produto.getNome(), produto.getQuantidade(), produto.getValorTotal()));
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -154,9 +163,9 @@ public class Main {
                 for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
                     Integer chave = entry.getKey();
                     Produto produto = entry.getValue();
-                    System.out.println(chave + " - " + produto.getNome());
+                    System.out.println(String.format("%d - %s - R$%.2f", chave, produto.getNome(), produto.getPrecoUnitario()));
                 }
-                System.out.println("\nF = Fechar carrinho");
+                System.out.println("\nF = Fechar carrinho\nC = Cancelar carrinho");
 
                 resposta = scanner.next();
 
@@ -168,7 +177,10 @@ public class Main {
                     System.out.println("Escolha ao menos um produto: \n");
                     entradaValida = false;
                 }
-                else if ((!resposta.equalsIgnoreCase("F")
+                else if (resposta.equalsIgnoreCase("C")) {
+                    System.out.println("Carrinho cancelado!");
+                }
+                else if (( (!resposta.equalsIgnoreCase("F") || !resposta.equalsIgnoreCase("C") )
                         && !isInteger(resposta))
                         || !produtosCadastro.containsKey(Integer.parseInt(resposta))) throw new IllegalArgumentException();
 
@@ -220,7 +232,7 @@ public class Main {
 
         System.out.println("Valor total: " + carrinho.calculaValorTotal());
 
-        System.out.println("\nDigite o valor do dinheiro dado pelo cliente: ");
+        System.out.println("\nDinheiro dado pelo cliente: ");
         Double valorPago = scanner.nextDouble();
 
         String nota = carrinho.pagar(valorPago);
