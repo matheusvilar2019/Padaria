@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -14,7 +13,6 @@ public class Main {
     public static void menu() {
         Scanner scanner = new Scanner(System.in);
         int respostaMenu = 0;
-
 
         if (operador.equals("")) escolherOperador();
 
@@ -38,6 +36,7 @@ public class Main {
                 break;
             case 3:
                 adicionarProdutos();
+                exportarArquivo();
                 menu();
         }
     }
@@ -87,11 +86,16 @@ public class Main {
         } while (!entradaValida);
     }
 
+    private static void exportarArquivo() {
+        Arquivo arquivo = new Arquivo();
+        arquivo.exportar(produtosCadastrados);
+    }
+
     public static Map<Integer, Produto> carregarProdutos() {
         Map<Integer, Produto> produtos = new HashMap();
 
         //Importa produtos via arquivo de texto
-        ImportaArquivo importaArquivo = new ImportaArquivo();
+        Arquivo importaArquivo = new Arquivo();
         List<Produto> listaEntrada = importaArquivo.importar();
 
         //adicionar listaEntrada ao mapTeste
