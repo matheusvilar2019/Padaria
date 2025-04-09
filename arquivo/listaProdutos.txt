@@ -1,7 +1,8 @@
-Pão Francês	0.50
-Leite	5.00
-Manteiga	5.00
-Sonho	5.00
-Pao de batata	5.00
-Panetone	30.00
-Cafe	120.00
+Pão Francês	0.5
+Leite	5.0
+Manteiga	5.0
+Sonho	5.0
+Pao de batata	5.0
+Panetone	30.0
+Cafe	120.0
+Manteiga	8.0

@@ -1,21 +1,38 @@
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class ImportaArquivo {
+public class Arquivo {
+    private final String diretorio = "arquivo/listaProdutos.txt";
+
     public List<Produto> importar() {
-        final String diretorio = "arquivo/listaProdutos.txt";
         List<String> listaEntrada = lerArquivo(diretorio);
-
         return gerarObjeto(listaEntrada);
+    }
+
+    public void exportar(Map<Integer, Produto> produtos) {
+        try {
+            String textoArquivo = gerarString(produtos);
+            Files.writeString(Paths.get(diretorio), textoArquivo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String gerarString(Map<Integer, Produto> produtos) {
+        StringBuilder texto = new StringBuilder();
+        int maxKey = produtos.keySet().stream().max(Integer::compareTo).orElse(0);
+
+        for (Map.Entry<Integer, Produto> produto : produtos.entrySet()) {
+            texto.append(produto.getValue().getNome() + "\t" + produto.getValue().getPrecoUnitario());
+            if (produto.getKey() < maxKey) texto.append("\n");
+        }
+
+        return texto.toString();
     }
 
     private List<String> lerArquivo(String diretorio) {
