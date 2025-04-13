@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println("1 - Carrinho");
         System.out.println("2 - Operador: Escolher");
-        System.out.println("3 - Produtos: Incluir novos");
+        System.out.println("3 - Produtos: Cadastrar novo");
 
         respostaMenu = scanner.nextInt();
 
@@ -138,14 +138,6 @@ public class Main {
                 if (produto.getQuantidade() > 0.00)
                     produtosCarrinho.add(produto);
             }
-
-            System.out.println("=======================================");
-            System.out.println("               PAGAMENTO               ");
-            System.out.println("=======================================");
-
-            for (Produto produto : produtosCarrinho) {
-                System.out.println(String.format("%s - Qtd: %.2f - R$%.2f", produto.getNome(), produto.getQuantidade(), produto.getValorTotal()));
-            }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -219,6 +211,72 @@ public class Main {
         return quantidade;
     }
 
+    private static void fecharCarrinho(List<Produto> produtosCarrinho) {
+        Carrinho carrinho = new Carrinho(produtosCarrinho, false, operador);
+        Scanner scanner = new Scanner(System.in);
+        Double valorPago = 0.00;
+        boolean carrinhoFechado = false;
+
+        while(!carrinhoFechado) {
+            exibirResumoCarrinho(carrinho);
+            switch(menuPagamento()) {
+                case 1:
+                    //pagar
+                    System.out.println("\nDinheiro dado pelo cliente: ");
+                    valorPago = scanner.nextDouble();
+
+                    if (valorPago < carrinho.getValorTotal()) System.out.println("Valor insuficiente!\n");
+                    else carrinhoFechado = true;
+                    break;
+                case 2: //Remover produto
+                    carrinho.removerProduto();
+                    if (produtosCarrinho.isEmpty()) return;
+                    continue;
+                case 3: //Cancelar compra
+                    produtosCadastrados = carregarProdutos(); // Limpa Lista
+                    System.out.println("Compra cancelada");
+                    return;
+                default:
+                    System.out.println("Escolha uma opção valida");
+            }
+        }
+
+        String nota = carrinho.pagar(valorPago);
+        System.out.println("\n");
+        System.out.println(nota);
+    }
+
+    private static void exibirResumoCarrinho(Carrinho carrinho) {
+        System.out.println("=======================================");
+        System.out.println("               PAGAMENTO               ");
+        System.out.println("=======================================");
+
+        for (Produto produto : carrinho.getProdutos()) {
+            System.out.println(String.format("%s - Qtd: %.2f - R$%.2f", produto.getNome(), produto.getQuantidade(), produto.getValorTotal()));
+        }
+        System.out.println("Valor total: " + carrinho.getValorTotal());
+    }
+
+    private static int menuPagamento() {
+        int resposta = 0;
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            //menu
+            System.out.println("1 - Pagar");
+            System.out.println("2 - Remover produto");
+            System.out.println("3 - Cancelar compra");
+            resposta = scanner.nextInt();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Digite um valor válido\n");
+            scanner.next();
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return resposta;
+    }
+
     private static boolean isInteger(String str) {
         if (str == null || str.isBlank()) return false;
 
@@ -228,20 +286,5 @@ public class Main {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    public static void fecharCarrinho(List<Produto> produtosCarrinho) {
-        Carrinho carrinho = new Carrinho(produtosCarrinho, false, operador);
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Valor total: " + carrinho.calculaValorTotal());
-
-        System.out.println("\nDinheiro dado pelo cliente: ");
-        Double valorPago = scanner.nextDouble();
-
-        String nota = carrinho.pagar(valorPago);
-
-        System.out.println("\n");
-        System.out.println(nota);
     }
 }

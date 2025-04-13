@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Carrinho {
@@ -29,9 +30,11 @@ public class Carrinho {
 
     public Double calculaValorTotal() {
         try {
-            return produtos.stream()
+            valorTotal =  produtos.stream()
                     .map(p -> p.getValorTotal() != null ? p.getValorTotal() : 0.00)
                     .reduce(0.00, Double::sum);
+
+            return valorTotal;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -41,5 +44,20 @@ public class Carrinho {
         Double troco = valorPago - valorTotal;
         Nota nota = new Nota(null, null, false, produtos, valorTotal, valorPago, troco, operador);
         return nota.gerarNota();
+    }
+
+    public void removerProduto(){
+        Scanner scanner = new Scanner(System.in);
+        int id;
+
+        for (Produto produto : produtos) {
+            System.out.println(produtos.indexOf(produto) + 1 + " - " + produto.getNome());
+        }
+
+        System.out.println("Digite o número do produto:");
+        id = scanner.nextInt() - 1;
+        produtos.remove(id);
+        calculaValorTotal();
+        System.out.println("Produto removido!");
     }
 }
