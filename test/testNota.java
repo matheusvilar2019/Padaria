@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -26,10 +25,10 @@ public class testNota {
 
         Nota nota = new Nota(nomeCliente, CPFCliente, CPFNota, produtos, total, pago, troco, operador);
 
-        Assert.assertEquals(nomeCliente, nota.getNomeCliente());
-        Assert.assertEquals(CPFCliente, nota.getCPFCliente());
-        Assert.assertEquals(CPFNota, nota.getCPFNota());
-        Assert.assertEquals(produtos, nota.getProdutos());
+        assertEquals(nomeCliente, nota.getNomeCliente());
+        assertEquals(CPFCliente, nota.getCPFCliente());
+        assertEquals(CPFNota, nota.getCPFNota());
+        assertEquals(produtos, nota.getProdutos());
     }
 
     @Test

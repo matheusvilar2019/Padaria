@@ -1,4 +1,3 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -18,9 +17,9 @@ public class testCarrinho {
         Carrinho carrinho = new Carrinho(produtos, false, "Matheus");
         Carrinho carrinho2 = new Carrinho(produtos, true, "Matheus");
 
-        Assert.assertEquals(produtos, carrinho.getProdutos());
-        Assert.assertEquals(false, carrinho.getCPFNota());
-        Assert.assertEquals(true, carrinho2.getCPFNota());
+        assertEquals(produtos, carrinho.getProdutos());
+        assertEquals(false, carrinho.getCPFNota());
+        assertEquals(true, carrinho2.getCPFNota());
     }
 
     @Test
@@ -33,7 +32,7 @@ public class testCarrinho {
 
         Carrinho carrinho = new Carrinho(produtos, false, "Matheus");
 
-        Assert.assertEquals((Double) 264.00, carrinho.getValorTotal());
+        assertEquals((Double) 264.00, carrinho.getValorTotal());
     }
 
     @Test
@@ -46,7 +45,7 @@ public class testCarrinho {
 
         Carrinho carrinho = new Carrinho(produtos, false, "Matheus");
 
-        Assert.assertEquals((Double) 244.00, carrinho.getValorTotal());
+        assertEquals((Double) 244.00, carrinho.getValorTotal());
     }
 
     @Test
@@ -59,7 +58,7 @@ public class testCarrinho {
 
         Carrinho carrinho = new Carrinho(produtos, false, "Matheus");
 
-        Assert.assertEquals((Double) (-236.00), carrinho.getValorTotal());
+        assertEquals((Double) (-236.00), carrinho.getValorTotal());
     }
 
     @Test(expected = NullPointerException.class)
