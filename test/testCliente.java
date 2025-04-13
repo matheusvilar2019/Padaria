@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,7 +9,7 @@ public class testCliente {
 
         Cliente cliente = new Cliente("Matheus", "123.456.789-10");
 
-        assertEquals("Matheus", cliente.getNome());
-        assertEquals("123.456.789-10", cliente.getCPF());
+        Assert.assertEquals("Matheus", cliente.getNome());
+        Assert.assertEquals("123.456.789-10", cliente.getCPF());
     }
 }
