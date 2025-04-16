@@ -20,7 +20,7 @@ public class Main {
 
         System.out.println("1 - Carrinho");
         System.out.println("2 - Operador: Escolher");
-        System.out.println("3 - Produtos: Cadastrar novo");
+        System.out.println("3 - Produtos: Gerenciar");
 
         respostaMenu = scanner.nextInt();
 
@@ -35,8 +35,7 @@ public class Main {
                 menu();
                 break;
             case 3:
-                adicionarProdutos();
-                exportarArquivo();
+                gerenciarProdutos();
                 menu();
         }
     }
@@ -48,25 +47,51 @@ public class Main {
         operador = scanner.next();
     }
 
-    private static void adicionarProdutos() {
-        String nome;
-        Double precoUnitario;
-        Integer maiorChave = 0;
-        boolean entradaValida;
+    private static void gerenciarProdutos() {
+        try {
+            int respostaMenu;
+            Scanner scanner = new Scanner(System.in);
 
-        do {
+            System.out.println("1 - Adicionar Produto");
+            System.out.println("2 - Alterar Produto");
+            System.out.println("3 - Remover Produto");
+
+            respostaMenu = scanner.nextInt();
+
+            switch (respostaMenu) {
+                case 1:
+                    adicionarProduto();
+                    break;
+                case 2:
+                    alterarProduto();
+                    break;
+                case 3:
+                    removerProduto();
+                    break;
+            }
+
+            exportarArquivo();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void adicionarProduto() {
+        boolean entradaValida = false;
+        while(!entradaValida) {
             try {
                 Scanner scanner = new Scanner(System.in);
+                Integer maiorChave = 0;
 
                 System.out.println("========================");
                 System.out.println("===== NOVO PRODUTO =====");
                 System.out.println("========================");
 
                 System.out.println("Digite o nome: ");
-                nome = scanner.next();
+                String nome = scanner.nextLine();
 
                 System.out.println("Digite o valor: ");
-                precoUnitario = scanner.nextDouble();
+                Double precoUnitario = scanner.nextDouble();
 
                 for (Map.Entry<Integer, Produto> entry : produtosCadastrados.entrySet()) {
                     if (entry.getKey() > maiorChave) {
@@ -75,15 +100,84 @@ public class Main {
                 }
 
                 produtosCadastrados.put(maiorChave + 1, new Produto(nome, precoUnitario, 0.00));
-
                 entradaValida = true;
             } catch (InputMismatchException e) {
-                entradaValida = false;
                 System.out.println("Digite um valor válido:\n");
             } catch (RuntimeException e) {
                 throw new RuntimeException(e.getMessage());
             }
         } while (!entradaValida);
+    }
+
+    private static void alterarProduto() {
+        Boolean entradaValida = false;
+        while(!entradaValida) {
+            try {
+                System.out.println("=========================");
+                System.out.println("==== ALTERAR PRODUTO ====");
+                System.out.println("=========================");
+
+                for (Map.Entry<Integer, Produto> entry : produtosCadastrados.entrySet()) {
+                    System.out.println(String.format("%d - %s - R$%.2f" ,entry.getKey(), entry.getValue().getNome(), entry.getValue().getPrecoUnitario()));
+                }
+
+                System.out.println();
+                System.out.println("Id: ");
+                Scanner scanner = new Scanner(System.in);
+                int id = Integer.parseInt(scanner.nextLine());
+                if (!produtoExiste(id)) throw new NumberFormatException();;
+
+                System.out.println("Nome: ");
+                String nome = scanner.nextLine();
+
+                System.out.println("Preço: ");
+                Double preco = Double.parseDouble(scanner.nextLine());
+
+
+                produtosCadastrados.put(id, new Produto(nome, preco, 0.00));
+                entradaValida = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um valor válido:\n");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void removerProduto() {
+        Boolean entradaValida = false;
+        while(!entradaValida) {
+            try {
+                System.out.println("=========================");
+                System.out.println("==== REMOVER PRODUTO ====");
+                System.out.println("=========================");
+
+                for (Map.Entry<Integer, Produto> entry : produtosCadastrados.entrySet()) {
+                    System.out.println(String.format("%d - %s - R$%.2f" ,entry.getKey(), entry.getValue().getNome(), entry.getValue().getPrecoUnitario()));
+                }
+
+                System.out.println();
+                System.out.println("Id: ");
+
+                Scanner scanner = new Scanner(System.in);
+                int id = scanner.nextInt();
+                if (!produtoExiste(id)) throw new InputMismatchException();
+
+                produtosCadastrados.remove(id);
+                entradaValida = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um valor válido:\n");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static Boolean produtoExiste(int id) {
+        for (Map.Entry<Integer, Produto> entry : produtosCadastrados.entrySet()) {
+            if (entry.getKey() == id) return true;
+        }
+        return false;
     }
 
     private static void exportarArquivo() {
