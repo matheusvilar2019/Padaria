@@ -52,7 +52,7 @@ public class Main {
             int respostaMenu;
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println("1 - Adicionar Produto");
+            System.out.println("1 - Cadastrar Produto");
             System.out.println("2 - Alterar Produto");
             System.out.println("3 - Remover Produto");
 
@@ -60,7 +60,7 @@ public class Main {
 
             switch (respostaMenu) {
                 case 1:
-                    adicionarProduto();
+                    cadastrarProduto();
                     break;
                 case 2:
                     alterarProduto();
@@ -76,7 +76,7 @@ public class Main {
         }
     }
 
-    private static void adicionarProduto() {
+    private static void cadastrarProduto() {
         boolean entradaValida = false;
         while(!entradaValida) {
             try {
