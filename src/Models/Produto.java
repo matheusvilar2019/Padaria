@@ -1,3 +1,5 @@
+package Models;
+
 import java.util.Objects;
 
 public class Produto {

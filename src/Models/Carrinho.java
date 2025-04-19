@@ -1,7 +1,8 @@
+package Models;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Carrinho {
     private List<Produto> produtos;
@@ -58,6 +59,6 @@ public class Carrinho {
         id = scanner.nextInt() - 1;
         produtos.remove(id);
         calculaValorTotal();
-        System.out.println("Produto removido!");
+        System.out.println("Models.Produto removido!");
     }
 }
