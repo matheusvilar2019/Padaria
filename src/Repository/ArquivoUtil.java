@@ -1,3 +1,7 @@
+package Repository;
+
+import Models.Produto;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -6,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Arquivo {
+public class ArquivoUtil {
     private final String diretorio = "arquivo/listaProdutos.txt";
 
     public List<Produto> importar() {

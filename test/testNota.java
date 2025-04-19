@@ -1,3 +1,5 @@
+import Models.Nota;
+import Models.Produto;
 import org.junit.Test;
 
 import java.util.Arrays;
