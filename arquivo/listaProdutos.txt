@@ -4,5 +4,5 @@ Manteiga	5.0
 Sonho	5.0
 Pao de batata	5.0
 Panetone	30.0
-Cafe	120.0
+Café	80.0
 Manteiga	8.0
