@@ -7,6 +7,8 @@ import Util.Validador;
 
 import java.util.*;
 
+import static Service.OperadorService.operador;
+
 public class CarrinhoService {
     public static List<Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
         Scanner scanner = new Scanner(System.in);
@@ -111,7 +113,7 @@ public class CarrinhoService {
     }
 
     public static void fecharCarrinho(List<Produto> produtosCarrinho) {
-        Carrinho carrinho = new Carrinho(produtosCarrinho, false, OperadorService.operador);
+        Carrinho carrinho = new Carrinho(produtosCarrinho);
         Scanner scanner = new Scanner(System.in);
         Double valorPago = 0.00;
         boolean carrinhoFechado = false;
@@ -119,16 +121,15 @@ public class CarrinhoService {
         while(!carrinhoFechado) {
             exibirResumoCarrinho(carrinho);
             switch(menuPagamento()) {
-                case 1:
-                    //pagar
+                case 1: //pagar
                     System.out.println("\nDinheiro dado pelo cliente: ");
                     valorPago = scanner.nextDouble();
 
-                    if (valorPago < carrinho.getValorTotal()) System.out.println("Valor insuficiente!\n");
+                    if (valorPago < calculaValorTotal(produtosCarrinho)) System.out.println("Valor insuficiente!\n");
                     else carrinhoFechado = true;
                     break;
                 case 2: //Remover produto
-                    carrinho.removerProduto();
+                    removerProduto(produtosCarrinho);
                     if (produtosCarrinho.isEmpty()) return;
                     continue;
                 case 3: //Cancelar compra
@@ -140,7 +141,7 @@ public class CarrinhoService {
             }
         }
 
-        String nota = carrinho.pagar(valorPago);
+        String nota = NotaService.gerar(produtosCarrinho, calculaValorTotal(produtosCarrinho), valorPago, operador);
         System.out.println("\n");
         System.out.println(nota);
         ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
@@ -154,7 +155,7 @@ public class CarrinhoService {
         for (Produto produto : carrinho.getProdutos()) {
             System.out.println(String.format("%s - Qtd: %.2f - R$%.2f", produto.getNome(), produto.getQuantidade(), produto.getValorTotal()));
         }
-        System.out.println("Valor total: " + carrinho.getValorTotal());
+        System.out.println("Valor total: " + calculaValorTotal(carrinho.getProdutos()));
     }
 
     private static int menuPagamento() {
@@ -175,5 +176,30 @@ public class CarrinhoService {
         }
 
         return resposta;
+    }
+
+    public static void removerProduto(List<Produto> produtos){
+        Scanner scanner = new Scanner(System.in);
+        int id;
+
+        for (Produto produto : produtos) {
+            System.out.println(produtos.indexOf(produto) + 1 + " - " + produto.getNome());
+        }
+
+        System.out.println("Digite o número do produto:");
+        id = scanner.nextInt() - 1;
+        produtos.remove(id);
+        calculaValorTotal(produtos);
+        System.out.println("Models.Produto removido!");
+    }
+
+    public static Double calculaValorTotal(List<Produto> produtos) {
+        try {
+            return produtos.stream()
+                    .map(p -> p.getValorTotal() != null ? p.getValorTotal() : 0.00)
+                    .reduce(0.00, Double::sum);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
