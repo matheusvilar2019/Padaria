@@ -22,6 +22,7 @@ public class Principal {
         System.out.println("1 - Carrinho");
         System.out.println("2 - Operador: Escolher");
         System.out.println("3 - Produtos: Gerenciar");
+        System.out.println("4 - Fluxo de Caixa");
 
         respostaMenu = scanner.nextInt();
 
@@ -38,6 +39,10 @@ public class Principal {
             case 3:
                 Produtos.exibir();
                 menu();
+                break;
+            case 4:
+                FluxoDeCaixa.exibir();
+                break;
         }
     }
 }
