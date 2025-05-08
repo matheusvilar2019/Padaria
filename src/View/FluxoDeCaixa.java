@@ -29,7 +29,7 @@ public class FluxoDeCaixa {
                     FluxoDeCaixaService.escolherOperador();
                     break;
                 case 3:
-                    Produtos.exibir();
+                    FluxoDeCaixaService.exibir();
                     break;
             }
             Principal.menu();

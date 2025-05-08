@@ -18,16 +18,19 @@ public class ArquivoUtil {
         return gerarObjeto(listaEntrada);
     }
 
-    public void exportar(Map<Integer, Produto> produtos) {
+    public void exportarProdutos(Map<Integer, Produto> produtos) {
+        exportar(gerarStringProdutos(produtos), diretorio);
+    }
+
+    public void exportar(String textoArquivo, String diretorio) {
         try {
-            String textoArquivo = gerarString(produtos);
             Files.writeString(Paths.get(diretorio), textoArquivo);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String gerarString(Map<Integer, Produto> produtos) {
+    private String gerarStringProdutos(Map<Integer, Produto> produtos) {
         StringBuilder texto = new StringBuilder();
         int maxKey = produtos.keySet().stream().max(Integer::compareTo).orElse(0);
 
@@ -39,7 +42,7 @@ public class ArquivoUtil {
         return texto.toString();
     }
 
-    private List<String> lerArquivo(String diretorio) {
+    public List<String> lerArquivo(String diretorio) {
         List<String> lista = new ArrayList<>();
 
         try {
