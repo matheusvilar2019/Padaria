@@ -36,6 +36,6 @@ public class Produtos {
 
     private static void exportarArquivo() {
         ArquivoUtil arquivo = new ArquivoUtil();
-        arquivo.exportar(ProdutoRepository.produtosCadastrados);
+        arquivo.exportarProdutos(ProdutoRepository.produtosCadastrados);
     }
 }
