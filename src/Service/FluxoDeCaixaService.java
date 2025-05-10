@@ -6,6 +6,8 @@ import Repository.ArquivoUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -46,28 +48,49 @@ public class FluxoDeCaixaService {
     public static void exibir() {
         try {
             List<Registro> fluxoDeCaixa = fluxoDeCaixa();
-
             StringBuilder resString = new StringBuilder();
+            DateTimeFormatter mesAnoFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
 
-            resString.append(String.format("=====================\n"));
-            resString.append(String.format("       05/2025       \n"));
-            resString.append(String.format("=====================\n"));
+            Map<YearMonth, List<Registro>> registrosPorMes = fluxoDeCaixa.stream()
+                            .collect(Collectors.groupingBy(
+                                    r -> YearMonth.from(r.getData()),
+                                    TreeMap::new,
+                                    Collectors.toList()
+                            ));
 
-            if (operador != null) {
-                resString.append(String.format("Operador: %s\n", operador));
+            for (Map.Entry<YearMonth, List<Registro>> entry : registrosPorMes.entrySet()) {
+                YearMonth mesAno = entry.getKey();
+                List<Registro> registros = entry.getValue();
+
+                resString.append(String.format("=============================\n"));
+                resString.append(String.format("           %s                \n", mesAno.format(mesAnoFormatter)));
+                resString.append(String.format("=============================\n"));
+
+                if (operador != null) {
+                    resString.append(String.format("Operador: %s\n\n", operador));
+                }
+
+                resString.append("QTD   PROD          TOTAL    \n");
+                resString.append("-----------------------------\n");
+
+                for (Registro r : registros) {
+                    resString.append(formatarRegistro(r));
+                }
+
+                double total = registros.stream()
+                        .map(x -> (x.getPrecoUnitario() * x.getQtdProduto()))
+                        .reduce(0.0, Double::sum);
+
+                resString.append(String.format("%-19s R$%.2f", "Total:", total));
+                resString.append("\n"); // linha em branco entre os meses
             }
-
-            for (Registro r : fluxoDeCaixa) {
-                resString.append(formatarRegistro(r));
-            }
-            // resString.append(String.format("2000 - Pão        - R$1000,00\n"));
-            // resString.append(String.format("100  - Leite      - R$500,00\n"));
-            // resString.append(String.format("50   - Manteiga   - R$500,00\n"));
-            // resString.append(String.format("Total: R$2000,00\n"));
-
             System.out.println(resString);
         } catch (Exception e){
             throw erro(e);
+        } finally {
+            operador = null;
+            dataInicial = null;
+            dataFinal = null;
         }
     }
 
@@ -80,7 +103,23 @@ public class FluxoDeCaixaService {
         try {
             ArquivoUtil arquivo = new ArquivoUtil();
             List<String> registrosImportados = arquivo.lerArquivo(diretorio);
-            return gerarObjeto(registrosImportados);
+            List<Registro> listaRegistros = gerarObjeto(registrosImportados);
+
+            // Filtro: Operador
+            if (operador != null) {
+                listaRegistros = listaRegistros.stream()
+                        .filter(x -> Objects.equals(x.getOperador(), operador))
+                        .collect(Collectors.toList());
+            }
+
+            // Filtro: Data
+            if (dataInicial != null && dataFinal != null) {
+                listaRegistros = listaRegistros.stream()
+                        .filter(x -> (x.getData().isAfter(dataInicial) && x.getData().isBefore(dataFinal)))
+                        .collect(Collectors.toList());
+            }
+
+            return listaRegistros;
         } catch (Exception e) {
             throw erro(e);
         }
