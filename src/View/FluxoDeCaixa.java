@@ -24,9 +24,11 @@ public class FluxoDeCaixa {
             switch (respostaMenu) {
                 case 1:
                     FluxoDeCaixaService.escolherPeriodo();
+                    exibir();
                     break;
                 case 2:
                     FluxoDeCaixaService.escolherOperador();
+                    exibir();
                     break;
                 case 3:
                     FluxoDeCaixaService.exibir();
