@@ -1,14 +1,39 @@
 # Padaria
-Projeto pessoal feito em console Java visando auxiliar nas tarefas de caixa. 
+Aplicação em Java para execução via console. O projeto permite o gerenciamento de produtos, estoque, vendas e geração de relatórios simples.
 
-## Funcionalidades
-Possui as seguintes funcionalidades:
+## 🚧 Status do Projeto
+🚧 Em desenvolvimento
+
+## 📋 Funcionalidades
 - Carrinho
 - Operador: Escolher
 - Produtos: Gerenciar
 - Fluxo de Caixa
 
-## Diagrama de Classes
+## 💻 Tecnologias Utilizadas
+- Java 17
+- Execução via terminal (console)
+- Orientação a Objetos
+
+## ▶️ Como Executar
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/matheusvilar2019/Padaria.git
+   ```
+2. Acesse a pasta do projeto:
+   ```bash
+   cd Padaria
+   ```
+3. Compile os arquivos Java:
+   ```bash
+   javac -d out -sourcepath src src/Main.java
+   ```
+4. Execute o programa:
+   ```bash
+   java -cp src Main
+   ```
+
+## 🧩 Diagrama de Classes
 ```mermaid
 classDiagram
         Carrinho --> Produto : contém
@@ -54,3 +79,6 @@ classDiagram
       +String getOperador()
     }
 ```
+   
+## ⭐ Autor
+Desenvolvido por [Matheus Vilar](https://github.com/matheusvilar2019)
