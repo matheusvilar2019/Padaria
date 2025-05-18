@@ -11,6 +11,7 @@ Aplicação em Java para execução via console. O projeto permite o gerenciamen
 - Relatórios de produtos e vendas  
 
 ## 🧪 Demonstração
+&nbsp;&nbsp;&nbsp;&nbsp;
 ![Demonstração](assets/demo.gif)
 
 ## 💻 Tecnologias Utilizadas
