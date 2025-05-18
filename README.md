@@ -5,10 +5,13 @@ Aplicação em Java para execução via console. O projeto permite o gerenciamen
 🚧 Em desenvolvimento
 
 ## 📋 Funcionalidades
-- Carrinho
-- Operador: Escolher
-- Produtos: Gerenciar
-- Fluxo de Caixa
+- Cadastro de produtos  
+- Atualização e consulta de estoque  (🚧 Em desenvolvimento)
+- Registro de vendas com cálculo automático do valor total  
+- Relatórios de produtos e vendas  
+
+## 🧪 Demonstração
+![Demonstração](assets/demo.gif)
 
 ## 💻 Tecnologias Utilizadas
 - Java 17
@@ -30,7 +33,7 @@ Aplicação em Java para execução via console. O projeto permite o gerenciamen
    ```
 4. Execute o programa:
    ```bash
-   java -cp src Main
+   java -cp out Main
    ```
 
 ## 🧩 Diagrama de Classes
