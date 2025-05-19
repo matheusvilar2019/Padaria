@@ -6,10 +6,11 @@ import Models.Produto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class NotaService {
-    public static String gerar(List<Produto> produtos, Double total, Double pago, String operador) {
+    public static String gerar(Map<Integer, Produto> produtos, Double total, Double pago, String operador) {
         try {
             StringBuilder nota = new StringBuilder();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -28,8 +29,8 @@ public class NotaService {
             nota.append("ITEM            QTD  UNIT    TOTAL\n");
             nota.append("---------------------------------------\n");
 
-            for (Produto produto : produtos) {
-                nota.append(formatarProduto(produto));
+            for (Map.Entry<Integer, Produto> produto : produtos.entrySet()) {
+                nota.append(formatarProduto(produto.getValue()));
             }
 
             nota.append("---------------------------------------\n");

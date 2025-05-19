@@ -2,6 +2,7 @@ package Service;
 
 import Models.Carrinho;
 import Models.Produto;
+import Repository.FluxoDeCaixaRepository;
 import Repository.ProdutoRepository;
 import Util.Validador;
 
@@ -10,13 +11,13 @@ import java.util.*;
 import static Service.OperadorService.operador;
 
 public class CarrinhoService {
-    public static List<Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
+    public static Map<Integer, Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
         Scanner scanner = new Scanner(System.in);
         String resposta = "";
         Double quantidade = 0.00;
         boolean entradaValida = false;
 
-        List<Produto> produtosCarrinho = new ArrayList<>();
+        Map<Integer, Produto> produtosCarrinho = new HashMap<>();
 
         try {
             do {
@@ -24,7 +25,7 @@ public class CarrinhoService {
                 resposta = Service.CarrinhoService.escolherProduto(produtosCadastro);
                 if (resposta.equalsIgnoreCase("C")) {
                     ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
-                    return produtosCarrinho = new ArrayList<>();
+                    return produtosCarrinho = new HashMap<>();
                 }
                 if (resposta.equalsIgnoreCase("F")) break;
 
@@ -37,7 +38,7 @@ public class CarrinhoService {
             for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
                 Produto produto = entry.getValue();
                 if (produto.getQuantidade() > 0.00)
-                    produtosCarrinho.add(produto);
+                    produtosCarrinho.put(entry.getKey(), produto);
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
@@ -54,7 +55,6 @@ public class CarrinhoService {
 
         do {
             try {
-
                 // Exibe os produtos cadastrados
                 System.out.println("Digite o código do produto: ");
                 for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
@@ -112,8 +112,8 @@ public class CarrinhoService {
         return quantidade;
     }
 
-    public static void fecharCarrinho(List<Produto> produtosCarrinho) {
-        Carrinho carrinho = new Carrinho(produtosCarrinho);
+    public static void fecharCarrinho(Map<Integer, Produto> produtosCarrinho) {
+        Carrinho carrinho = new Carrinho(produtosCarrinho.values().stream().toList());
         Scanner scanner = new Scanner(System.in);
         Double valorPago = 0.00;
         boolean carrinhoFechado = false;
@@ -130,6 +130,7 @@ public class CarrinhoService {
                     break;
                 case 2: //Remover produto
                     removerProduto(produtosCarrinho);
+                    carrinho = new Carrinho(produtosCarrinho.values().stream().toList());
                     if (produtosCarrinho.isEmpty()) return;
                     continue;
                 case 3: //Cancelar compra
@@ -142,6 +143,7 @@ public class CarrinhoService {
         }
 
         String nota = NotaService.gerar(produtosCarrinho, calculaValorTotal(produtosCarrinho), valorPago, operador);
+        FluxoDeCaixaRepository.salvar(produtosCarrinho, operador);
         System.out.println("\n");
         System.out.println(nota);
         ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
@@ -178,19 +180,23 @@ public class CarrinhoService {
         return resposta;
     }
 
-    public static void removerProduto(List<Produto> produtos){
+    public static void removerProduto(Map<Integer, Produto> produtos){
         Scanner scanner = new Scanner(System.in);
         int id;
 
-        for (Produto produto : produtos) {
-            System.out.println(produtos.indexOf(produto) + 1 + " - " + produto.getNome());
+        for (Map.Entry<Integer, Produto> produto : produtos.entrySet()) {
+            System.out.println(produto.getKey() + " - " + produto.getValue().getNome());
         }
 
         System.out.println("Digite o número do produto:");
-        id = scanner.nextInt() - 1;
+        id = scanner.nextInt();
         produtos.remove(id);
+        System.out.println("Produto removido!");
         calculaValorTotal(produtos);
-        System.out.println("Models.Produto removido!");
+    }
+
+    public static Double calculaValorTotal(Map<Integer, Produto> produtos) {
+        return calculaValorTotal(produtos.values().stream().toList());
     }
 
     public static Double calculaValorTotal(List<Produto> produtos) {
