@@ -1,25 +1,21 @@
 package Service;
 
 import Models.Registro;
-import Models.Produto;
-import Repository.ArquivoUtil;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static Repository.FluxoDeCaixaRepository.importarRegistros;
 import static Util.ExcecaoUtil.erro;
 
 public class FluxoDeCaixaService {
     static LocalDate dataInicial;
     static LocalDate dataFinal;
     static String operador;
-    static String diretorio = "arquivo/fluxoDeCaixa.txt";
 
     public static void escolherOperador() {
         try {
@@ -101,9 +97,7 @@ public class FluxoDeCaixaService {
 
     public static List<Registro> fluxoDeCaixa() {
         try {
-            ArquivoUtil arquivo = new ArquivoUtil();
-            List<String> registrosImportados = arquivo.lerArquivo(diretorio);
-            List<Registro> listaRegistros = gerarObjeto(registrosImportados);
+            List<Registro> listaRegistros = importarRegistros();
 
             // Filtro: Operador
             if (operador != null) {
@@ -120,79 +114,6 @@ public class FluxoDeCaixaService {
             }
 
             return listaRegistros;
-        } catch (Exception e) {
-            throw erro(e);
-        }
-    }
-
-    private static List<Registro> gerarObjeto(List<String> listaEntrada) {
-        List<Registro> registros = listaEntrada.stream()
-                .map(FluxoDeCaixaService::converterParaRegistro)
-                //.map(this::converterParaRegistro)
-                .filter(registro -> registro != null)
-                .collect(Collectors.toList());
-
-        return registros;
-    }
-
-    private static Registro converterParaRegistro(String linha) {
-        try {
-            String[] arr = linha.split(";");
-            if (arr.length < 6) return null;
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate data = LocalDate.parse(arr[0], formatter);
-            Double qtdProduto = Double.parseDouble(arr[1]);
-            int idProduto = Integer.parseInt(arr[2]);
-            String nomeProduto = arr[3];
-            Double precoUnitario = Double.parseDouble(arr[4]);
-            String operador = arr[5];
-
-            return new Registro(data, qtdProduto, idProduto, nomeProduto, precoUnitario, operador);
-        } catch (Exception e) {
-            System.out.println("Erro ao converter linha: " + linha + " -> " + e.getMessage());
-            return null;
-        }
-    }
-
-    public static void salvar(Map<Integer, Produto> produtos, String operador) {
-        try {
-            ArquivoUtil importaArquivo = new ArquivoUtil();
-
-            List<String> registrosAntigos = importaArquivo.lerArquivo(diretorio);
-            List<String> registrosNovos = salvarString(produtos, operador);
-            String resultado = juntaRegistros(registrosAntigos, registrosNovos);
-
-            importaArquivo.exportar(resultado, diretorio);
-        } catch (Exception e) {
-            throw erro(e);
-        }
-    }
-
-    public static List<String> salvarString(Map<Integer, Produto> produtos, String operador) {
-        try {
-            List<String> texto = new ArrayList<>();
-
-            for (Map.Entry<Integer, Produto> produto : produtos.entrySet()) {
-                texto.add(LocalDate.now() + ";" + produto.getValue().getQuantidade() + ";" + produto.getKey() + produto.getValue().getNome() + produto.getValue().getPrecoUnitario() + operador);
-            }
-            return texto;
-        } catch (Exception e) {
-            throw erro(e);
-        }
-    }
-
-    public static String juntaRegistros(List<String> registrosAntigos, List<String> registrosNovos) {
-        try {
-            String resultado = "";
-
-            List<String> resultadoLista = new ArrayList<>(registrosAntigos);
-            resultadoLista.addAll(registrosNovos);
-
-            for (String s : resultadoLista) {
-                resultado += s + "\n";
-            }
-            return resultado;
         } catch (Exception e) {
             throw erro(e);
         }

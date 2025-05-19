@@ -28,7 +28,7 @@ public class Principal {
 
         switch (respostaMenu) {
             case 1:
-                List<Produto> produtosCarrinho = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
+                Map<Integer, Produto> produtosCarrinho = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
                 if (!produtosCarrinho.isEmpty()) Service.CarrinhoService.fecharCarrinho(produtosCarrinho);
                 menu();
                 break;
