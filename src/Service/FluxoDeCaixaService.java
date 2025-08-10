@@ -1,6 +1,7 @@
 package Service;
 
 import Models.Registro;
+import Repository.ArquivoUtil;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -97,7 +98,7 @@ public class FluxoDeCaixaService {
 
     public static List<Registro> fluxoDeCaixa() {
         try {
-            List<Registro> listaRegistros = importarRegistros();
+            List<Registro> listaRegistros = importarRegistros(new ArquivoUtil());
 
             // Filtro: Operador
             if (operador != null) {

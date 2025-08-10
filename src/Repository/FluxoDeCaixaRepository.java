@@ -14,8 +14,7 @@ import static Util.FluxoDeCaixaUtil.*;
 public class FluxoDeCaixaRepository {
     static String diretorio = "arquivo/fluxoDeCaixa.txt";
 
-    public static List<Registro> importarRegistros() {
-        ArquivoUtil arquivo = new ArquivoUtil();
+    public static List<Registro> importarRegistros(ArquivoUtil arquivo) {
         List<String> registrosString = arquivo.lerArquivo(diretorio);
 
         return registrosString.stream()
@@ -25,10 +24,8 @@ public class FluxoDeCaixaRepository {
                 .collect(Collectors.toList());
     }
 
-    public static void salvar(Map<Integer, Produto> produtos, String operador) {
+    public static void salvar(Map<Integer, Produto> produtos, String operador, ArquivoUtil importaArquivo) {
         try {
-            ArquivoUtil importaArquivo = new ArquivoUtil();
-
             List<String> registrosAntigos = importaArquivo.lerArquivo(diretorio);
             List<String> registrosNovos = registrosParaTexto(produtos, operador);
             String resultado = montarTextoFinal(registrosAntigos, registrosNovos);

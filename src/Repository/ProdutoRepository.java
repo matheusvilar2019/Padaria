@@ -5,13 +5,12 @@ import Models.Produto;
 import java.util.*;
 
 public class ProdutoRepository {
-    public static Map<Integer, Produto> produtosCadastrados = carregarProdutos();
+    public static Map<Integer, Produto> produtosCadastrados = carregarProdutos(new ArquivoUtil());
 
-    public static Map<Integer, Produto> carregarProdutos() {
+    public static Map<Integer, Produto> carregarProdutos(ArquivoUtil importaArquivo) {
         Map<Integer, Produto> produtos = new HashMap<>();
 
         //Importa produtos via arquivo de texto
-        ArquivoUtil importaArquivo = new ArquivoUtil();
         List<Produto> listaEntrada = importaArquivo.importar();
 
         //adicionar listaEntrada ao mapTeste

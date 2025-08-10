@@ -2,6 +2,7 @@ package Service;
 
 import Models.Carrinho;
 import Models.Produto;
+import Repository.ArquivoUtil;
 import Repository.FluxoDeCaixaRepository;
 import Repository.ProdutoRepository;
 import Util.Validador;
@@ -24,7 +25,7 @@ public class CarrinhoService {
                 // Escolhe produto
                 resposta = Service.CarrinhoService.escolherProduto(produtosCadastro);
                 if (resposta.equalsIgnoreCase("C")) {
-                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
+                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
                     return produtosCarrinho = new HashMap<>();
                 }
                 if (resposta.equalsIgnoreCase("F")) break;
@@ -112,8 +113,7 @@ public class CarrinhoService {
         return quantidade;
     }
 
-    public static void fecharCarrinho(Map<Integer, Produto> produtosCarrinho) {
-        Carrinho carrinho = new Carrinho(produtosCarrinho.values().stream().toList());
+    public static void fecharCarrinho(Map<Integer, Produto> produtosCarrinho, Carrinho carrinho) {
         Scanner scanner = new Scanner(System.in);
         Double valorPago = 0.00;
         boolean carrinhoFechado = false;
@@ -134,7 +134,7 @@ public class CarrinhoService {
                     if (produtosCarrinho.isEmpty()) return;
                     continue;
                 case 3: //Cancelar compra
-                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
+                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
                     System.out.println("Compra cancelada");
                     return;
                 default:
@@ -143,10 +143,10 @@ public class CarrinhoService {
         }
 
         String nota = NotaService.gerar(produtosCarrinho, calculaValorTotal(produtosCarrinho), valorPago, operador);
-        FluxoDeCaixaRepository.salvar(produtosCarrinho, operador);
+        FluxoDeCaixaRepository.salvar(produtosCarrinho, operador, new ArquivoUtil());
         System.out.println("\n");
         System.out.println(nota);
-        ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(); // Limpa Lista
+        ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
     }
 
     private static void exibirResumoCarrinho(Carrinho carrinho) {

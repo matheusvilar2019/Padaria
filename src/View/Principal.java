@@ -1,5 +1,6 @@
 package View;
 
+import Models.Carrinho;
 import Models.Produto;
 import Repository.ProdutoRepository;
 import Service.CarrinhoService;
@@ -29,7 +30,7 @@ public class Principal {
         switch (respostaMenu) {
             case 1:
                 Map<Integer, Produto> produtosCarrinho = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
-                if (!produtosCarrinho.isEmpty()) Service.CarrinhoService.fecharCarrinho(produtosCarrinho);
+                if (!produtosCarrinho.isEmpty()) Service.CarrinhoService.fecharCarrinho(produtosCarrinho, new Carrinho(produtosCarrinho.values().stream().toList()));
                 menu();
                 break;
             case 2:
