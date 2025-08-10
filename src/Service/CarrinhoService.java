@@ -59,37 +59,12 @@ public class CarrinhoService {
         Scanner scanner = new Scanner(System.in);
         boolean entradaValida;
         String resposta = "";
-        List<Produto> produtosCarrinho;
 
         do {
             try {
-                // Exibe os produtos cadastrados
-                System.out.println("Digite o código do produto: ");
-                for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
-                    Integer chave = entry.getKey();
-                    Produto produto = entry.getValue();
-                    System.out.println(String.format("%d - %s - R$%.2f", chave, produto.getNome(), produto.getPrecoUnitario()));
-                }
-                System.out.println("\nF = Fechar carrinho\nC = Cancelar carrinho");
-
+                exibeProdutosCadastrados(produtosCadastro);
                 resposta = scanner.next();
-
-                // Valida respostas
-                if (resposta.equalsIgnoreCase("F")) {
-                    // Verifica se existe produto adicionado
-                    if (produtosCadastro.values().stream().anyMatch(produto ->  produto.getQuantidade() > 0.00)) break;
-
-                    System.out.println("Escolha ao menos um produto: \n");
-                    entradaValida = false;
-                }
-                else if (resposta.equalsIgnoreCase("C")) {
-                    System.out.println("Carrinho cancelado!");
-                }
-                else if (( (!resposta.equalsIgnoreCase("F") || !resposta.equalsIgnoreCase("C") )
-                        && !Validador.isInteger(resposta))
-                        || !produtosCadastro.containsKey(Integer.parseInt(resposta))) throw new IllegalArgumentException();
-
-                entradaValida = true;
+                entradaValida = validaResposta(produtosCadastro, resposta);
             } catch (IllegalArgumentException e) {
                 System.out.println("Digite um valor válido\n");
                 scanner.next();
@@ -98,6 +73,35 @@ public class CarrinhoService {
         } while (!entradaValida);
 
         return resposta;
+    }
+
+    public static void exibeProdutosCadastrados(Map<Integer, Produto> produtosCadastro) {
+        System.out.println("Digite o código do produto: ");
+        for (Map.Entry<Integer, Produto> entry : produtosCadastro.entrySet()) {
+            Integer chave = entry.getKey();
+            Produto produto = entry.getValue();
+            System.out.println(String.format("%d - %s - R$%.2f", chave, produto.getNome(), produto.getPrecoUnitario()));
+        }
+        System.out.println("\nF = Fechar carrinho\nC = Cancelar carrinho");
+    }
+
+    public static boolean validaResposta(Map<Integer, Produto> produtosCadastro, String resposta) {
+        if (resposta.equalsIgnoreCase("F")) {
+            // Verifica se existe produto adicionado
+            if (produtosCadastro.values().stream().anyMatch(produto ->  produto.getQuantidade() > 0.00))
+                return true;
+
+            System.out.println("Escolha ao menos um produto: \n");
+            return false;
+        }
+        else if (resposta.equalsIgnoreCase("C")) {
+            System.out.println("Carrinho cancelado!");
+        }
+        else if (( (!resposta.equalsIgnoreCase("F") || !resposta.equalsIgnoreCase("C") )
+                && !Validador.isInteger(resposta))
+                || !produtosCadastro.containsKey(Integer.parseInt(resposta))) throw new IllegalArgumentException();
+
+        return true;
     }
 
     public static Double escolherQuantidade() {
