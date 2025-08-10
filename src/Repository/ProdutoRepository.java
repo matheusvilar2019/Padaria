@@ -5,16 +5,15 @@ import Models.Produto;
 import java.util.*;
 
 public class ProdutoRepository {
-    public static Map<Integer, Produto> produtosCadastrados = carregarProdutos();
+    public static Map<Integer, Produto> produtosCadastrados = carregar(new ArquivoUtil());
 
-    public static Map<Integer, Produto> carregarProdutos() {
-        Map<Integer, Produto> produtos = new HashMap<>();
-
-        //Importa produtos via arquivo de texto
-        ArquivoUtil importaArquivo = new ArquivoUtil();
+    public static Map<Integer, Produto> carregar(ArquivoUtil importaArquivo) {
         List<Produto> listaEntrada = importaArquivo.importar();
+        return converteProdutos(listaEntrada);
+    }
 
-        //adicionar listaEntrada ao mapTeste
+    public static Map<Integer, Produto> converteProdutos(List<Produto> listaEntrada) {
+        Map<Integer, Produto> produtos = new HashMap<>();
         int maxKey = produtos.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
 
         for (Produto produto : listaEntrada) {
@@ -24,7 +23,7 @@ public class ProdutoRepository {
         return produtos;
     }
 
-    public static void cadastrarProduto() {
+    public static void cadastrar() {
         boolean entradaValida = false;
         while(!entradaValida) {
             try {
@@ -57,7 +56,7 @@ public class ProdutoRepository {
         } while (!entradaValida);
     }
 
-    public static void alterarProduto() {
+    public static void alterar() {
         Boolean entradaValida = false;
         while(!entradaValida) {
             try {
@@ -92,7 +91,7 @@ public class ProdutoRepository {
         }
     }
 
-    public static void removerProduto() {
+    public static void remover() {
         Boolean entradaValida = false;
         while(!entradaValida) {
             try {
