@@ -165,7 +165,6 @@ public class CarrinhoService {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            //menu
             System.out.println("1 - Pagar");
             System.out.println("2 - Remover produto");
             System.out.println("3 - Cancelar compra");

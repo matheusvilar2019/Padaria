@@ -8,12 +8,12 @@ public class ProdutoRepository {
     public static Map<Integer, Produto> produtosCadastrados = carregarProdutos(new ArquivoUtil());
 
     public static Map<Integer, Produto> carregarProdutos(ArquivoUtil importaArquivo) {
-        Map<Integer, Produto> produtos = new HashMap<>();
-
-        //Importa produtos via arquivo de texto
         List<Produto> listaEntrada = importaArquivo.importar();
+        return converteProdutos(listaEntrada);
+    }
 
-        //adicionar listaEntrada ao mapTeste
+    public static Map<Integer, Produto> converteProdutos(List<Produto> listaEntrada) {
+        Map<Integer, Produto> produtos = new HashMap<>();
         int maxKey = produtos.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
 
         for (Produto produto : listaEntrada) {
