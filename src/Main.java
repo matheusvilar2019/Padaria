@@ -1,7 +1,7 @@
-import View.Principal;
+import View.MenuPrincipal;
 
 public class Main {
     public static void main(String[] args) {
-        Principal.menu();
+        MenuPrincipal.exibir();
     }
 }

@@ -1,18 +1,12 @@
 package View;
 
-import Models.Carrinho;
-import Models.Produto;
-import Repository.ProdutoRepository;
 import Service.CarrinhoService;
 import Service.OperadorService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
-public class Principal {
-    public static void menu() {
+public class MenuPrincipal {
+    public static void exibir() {
         Scanner scanner = new Scanner(System.in);
         int respostaMenu = 0;
 
@@ -41,6 +35,6 @@ public class Principal {
                 FluxoDeCaixa.exibir();
                 break;
         }
-        menu();
+        exibir();
     }
 }

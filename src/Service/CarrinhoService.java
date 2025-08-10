@@ -13,13 +13,13 @@ import static Service.OperadorService.operador;
 
 public class CarrinhoService {
     public static void exibir() {
-        Map<Integer, Produto> produtos = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
+        Map<Integer, Produto> produtos = colocarProdutos(ProdutoRepository.produtosCadastrados);
 
         if (!produtos.isEmpty())
-            Service.CarrinhoService.fecharCarrinho(produtos, new Carrinho(produtos.values().stream().toList()));
+            fechar(produtos, new Carrinho(produtos.values().stream().toList()));
     }
 
-    public static Map<Integer, Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
+    public static Map<Integer, Produto> colocarProdutos(Map<Integer, Produto> produtosCadastro) {
         Scanner scanner = new Scanner(System.in);
         String resposta = "";
         Double quantidade = 0.00;
@@ -32,7 +32,7 @@ public class CarrinhoService {
                 // Escolhe produto
                 resposta = Service.CarrinhoService.escolherProduto(produtosCadastro);
                 if (resposta.equalsIgnoreCase("C")) {
-                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
+                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregar(new ArquivoUtil()); // Limpa Lista
                     return produtosCarrinho = new HashMap<>();
                 }
                 if (resposta.equalsIgnoreCase("F")) break;
@@ -120,13 +120,13 @@ public class CarrinhoService {
         return quantidade;
     }
 
-    public static void fecharCarrinho(Map<Integer, Produto> produtosCarrinho, Carrinho carrinho) {
+    public static void fechar(Map<Integer, Produto> produtosCarrinho, Carrinho carrinho) {
         Scanner scanner = new Scanner(System.in);
         Double valorPago = 0.00;
         boolean carrinhoFechado = false;
 
         while(!carrinhoFechado) {
-            exibirResumoCarrinho(carrinho);
+            exibirResumo(carrinho);
             switch(menuPagamento()) {
                 case 1: //pagar
                     System.out.println("\nDinheiro dado pelo cliente: ");
@@ -141,7 +141,7 @@ public class CarrinhoService {
                     if (produtosCarrinho.isEmpty()) return;
                     continue;
                 case 3: //Cancelar compra
-                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
+                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregar(new ArquivoUtil()); // Limpa Lista
                     System.out.println("Compra cancelada");
                     return;
                 default:
@@ -153,10 +153,10 @@ public class CarrinhoService {
         FluxoDeCaixaRepository.salvar(produtosCarrinho, operador, new ArquivoUtil());
         System.out.println("\n");
         System.out.println(nota);
-        ProdutoRepository.produtosCadastrados = ProdutoRepository.carregarProdutos(new ArquivoUtil()); // Limpa Lista
+        ProdutoRepository.produtosCadastrados = ProdutoRepository.carregar(new ArquivoUtil()); // Limpa Lista
     }
 
-    private static void exibirResumoCarrinho(Carrinho carrinho) {
+    private static void exibirResumo(Carrinho carrinho) {
         System.out.println("=======================================");
         System.out.println("               PAGAMENTO               ");
         System.out.println("=======================================");

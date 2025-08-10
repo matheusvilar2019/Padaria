@@ -49,7 +49,7 @@ public class FluxoDeCaixaUtil {
         }
     }
 
-    public static String montarTextoFinal(List<String> registrosAntigos, List<String> registrosNovos) {
+    public static String gerarTextoFinal(List<String> registrosAntigos, List<String> registrosNovos) {
         try {
             String resultado = "";
 

@@ -5,9 +5,9 @@ import Models.Produto;
 import java.util.*;
 
 public class ProdutoRepository {
-    public static Map<Integer, Produto> produtosCadastrados = carregarProdutos(new ArquivoUtil());
+    public static Map<Integer, Produto> produtosCadastrados = carregar(new ArquivoUtil());
 
-    public static Map<Integer, Produto> carregarProdutos(ArquivoUtil importaArquivo) {
+    public static Map<Integer, Produto> carregar(ArquivoUtil importaArquivo) {
         List<Produto> listaEntrada = importaArquivo.importar();
         return converteProdutos(listaEntrada);
     }
@@ -23,7 +23,7 @@ public class ProdutoRepository {
         return produtos;
     }
 
-    public static void cadastrarProduto() {
+    public static void cadastrar() {
         boolean entradaValida = false;
         while(!entradaValida) {
             try {
@@ -56,7 +56,7 @@ public class ProdutoRepository {
         } while (!entradaValida);
     }
 
-    public static void alterarProduto() {
+    public static void alterar() {
         Boolean entradaValida = false;
         while(!entradaValida) {
             try {
@@ -91,7 +91,7 @@ public class ProdutoRepository {
         }
     }
 
-    public static void removerProduto() {
+    public static void remover() {
         Boolean entradaValida = false;
         while(!entradaValida) {
             try {

@@ -28,7 +28,7 @@ public class FluxoDeCaixaRepository {
         try {
             List<String> registrosAntigos = importaArquivo.lerArquivo(diretorio);
             List<String> registrosNovos = registrosParaTexto(produtos, operador);
-            String resultado = montarTextoFinal(registrosAntigos, registrosNovos);
+            String resultado = gerarTextoFinal(registrosAntigos, registrosNovos);
 
             importaArquivo.exportar(resultado, diretorio);
         } catch (Exception e) {

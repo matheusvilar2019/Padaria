@@ -19,13 +19,13 @@ public class Produtos {
 
             switch (respostaMenu) {
                 case 1:
-                    ProdutoRepository.cadastrarProduto();
+                    ProdutoRepository.cadastrar();
                     break;
                 case 2:
-                    ProdutoRepository.alterarProduto();
+                    ProdutoRepository.alterar();
                     break;
                 case 3:
-                    ProdutoRepository.removerProduto();
+                    ProdutoRepository.remover();
                     break;
             }
             exportarArquivo();
