@@ -121,34 +121,50 @@ public class CarrinhoService {
     }
 
     public static void fechar(Map<Integer, Produto> produtosCarrinho, Carrinho carrinho) {
-        Scanner scanner = new Scanner(System.in);
-        Double valorPago = 0.00;
-        boolean carrinhoFechado = false;
+        boolean fechado = false;
 
-        while(!carrinhoFechado) {
+        while(!fechado) {
             exibirResumo(carrinho);
             switch(menuPagamento()) {
-                case 1: //pagar
-                    System.out.println("\nDinheiro dado pelo cliente: ");
-                    valorPago = scanner.nextDouble();
-
-                    if (valorPago < calculaValorTotal(produtosCarrinho)) System.out.println("Valor insuficiente!\n");
-                    else carrinhoFechado = true;
+                case 1:
+                    fechado = pagar(produtosCarrinho);
                     break;
-                case 2: //Remover produto
+                case 2:
                     removerProduto(produtosCarrinho);
                     carrinho = new Carrinho(produtosCarrinho.values().stream().toList());
-                    if (produtosCarrinho.isEmpty()) return;
                     continue;
-                case 3: //Cancelar compra
-                    ProdutoRepository.produtosCadastrados = ProdutoRepository.carregar(new ArquivoUtil()); // Limpa Lista
-                    System.out.println("Compra cancelada");
+                case 3:
+                    cancelar();
                     return;
                 default:
                     System.out.println("Escolha uma opção valida");
             }
+            if (produtosCarrinho.isEmpty()) return; // Produto removido
+        }
+    }
+
+    public static boolean pagar(Map<Integer, Produto> produtosCarrinho) {
+        Scanner scanner = new Scanner(System.in);
+        Double valorPago = 0.00;
+
+        System.out.println("\nDinheiro dado pelo cliente: ");
+        valorPago = scanner.nextDouble();
+
+        if (valorPago < calculaValorTotal(produtosCarrinho)) System.out.println("Valor insuficiente!\n");
+        else {
+            processarNota(produtosCarrinho, valorPago);
+            return true;
         }
 
+        return false;
+    }
+
+    public static void cancelar() {
+        ProdutoRepository.produtosCadastrados = ProdutoRepository.carregar(new ArquivoUtil()); // Limpa Lista
+        System.out.println("Compra cancelada");
+    }
+
+    public static void processarNota(Map<Integer, Produto> produtosCarrinho, Double valorPago) {
         String nota = NotaService.gerar(produtosCarrinho, calculaValorTotal(produtosCarrinho), valorPago, operador);
         FluxoDeCaixaRepository.salvar(produtosCarrinho, operador, new ArquivoUtil());
         System.out.println("\n");
