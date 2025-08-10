@@ -34,7 +34,6 @@ public class FluxoDeCaixa {
                     FluxoDeCaixaService.exibir();
                     break;
             }
-            Principal.menu();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

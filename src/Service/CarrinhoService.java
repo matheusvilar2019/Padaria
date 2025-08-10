@@ -12,6 +12,13 @@ import java.util.*;
 import static Service.OperadorService.operador;
 
 public class CarrinhoService {
+    public static void exibir() {
+        Map<Integer, Produto> produtos = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
+
+        if (!produtos.isEmpty())
+            Service.CarrinhoService.fecharCarrinho(produtos, new Carrinho(produtos.values().stream().toList()));
+    }
+
     public static Map<Integer, Produto> colocarProdutosCarrinho(Map<Integer, Produto> produtosCadastro) {
         Scanner scanner = new Scanner(System.in);
         String resposta = "";

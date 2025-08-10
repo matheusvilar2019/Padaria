@@ -16,7 +16,7 @@ public class Principal {
         Scanner scanner = new Scanner(System.in);
         int respostaMenu = 0;
 
-        if (OperadorService.operador.equals("")) OperadorService.escolherOperador();
+        if (OperadorService.operador.equals("")) OperadorService.escolher();
 
         System.out.println("Bem vindo, " + OperadorService.operador);
 
@@ -29,21 +29,18 @@ public class Principal {
 
         switch (respostaMenu) {
             case 1:
-                Map<Integer, Produto> produtosCarrinho = CarrinhoService.colocarProdutosCarrinho(ProdutoRepository.produtosCadastrados);
-                if (!produtosCarrinho.isEmpty()) Service.CarrinhoService.fecharCarrinho(produtosCarrinho, new Carrinho(produtosCarrinho.values().stream().toList()));
-                menu();
+                CarrinhoService.exibir();
                 break;
             case 2:
-                OperadorService.escolherOperador();
-                menu();
+                OperadorService.escolher();
                 break;
             case 3:
                 Produtos.exibir();
-                menu();
                 break;
             case 4:
                 FluxoDeCaixa.exibir();
                 break;
         }
+        menu();
     }
 }
